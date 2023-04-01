@@ -12,53 +12,55 @@ public class EmployeeServices {
     private int size;
 
     public EmployeeServices() {
-        this.employees = new Employee[5];
+        this.employees = new Employee[2];
     }
 
-    public void addEmployee(String name, String lastname) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
-        if (size > employees.length) {
+    public Employee addEmployee(String name, String lastname) {
+        if (size >= employees.length) {
             throw new EmployeeStorageIsFullException("Нельзя добавить сотрудника, массив заполнен");
         }
+        Employee newEmployee = new Employee(name, lastname);
         for (int i = 0; i < size; i++) {
-            Employee employee = employees[i];
-            if (employees[i].getName().equals(name) & employees[i].getLastname().equals(lastname)) {
+            if (employees[i].equals(newEmployee)) {
                 throw new EmployeeAlreadyAddedException("Нельзя добавить сотрудника, такой сотрудник уже есть в массиве");
             }
         }
-        Employee newEmployee = new Employee(name, lastname);
-        employees[size++] = newEmployee;
+        employees[size] = newEmployee;
+        size++;
+        return newEmployee;
     }
 
-    public void removeEmployee(String name, String lastname) throws EmployeeNotFoundException {
+    public Employee removeEmployee(String name, String lastname) {
+        Employee removeEmployee = new Employee(name, lastname);
         for (int i = 0; i < employees.length; i++) {
-            if (employees[i].getName().equals(name) & employees[i].getLastname().equals(lastname)) {
-                System.out.println(employees[i].getName() + " " + employees[i].getLastname() + "удален");
+            if (employees[i].equals(removeEmployee)) {
                 System.arraycopy(employees, i + 1, employees, i, size - i - 1);
                 employees[size - 1] = null;
                 size--;
-                return;
+                return removeEmployee;
             }
         }
-        throw new EmployeeNotFoundException("Удаляемый сотрудник не найдет");
+        throw new EmployeeNotFoundException("Удаляемый сотрудник не найден");
     }
 
-    public void findEmployee(String name, String lastname) throws EmployeeNotFoundException {
+    public Employee findEmployee(String name, String lastname) {
+        Employee findEmployee = new Employee(name, lastname);
         for (int i = 0; i < size; i++) {
-            Employee employee = employees[i];
-            if (employees[i].getName().equals(name) & employees[i].getLastname().equals(lastname)) {
-                System.out.println(employee.getName() + " " +  employee.getLastname());
-                return;
+            if (employees[i].equals(findEmployee)) {
+                return findEmployee;
             }
         }
         throw new EmployeeNotFoundException(name + " " + lastname + " не найден");
 
     }
+
     public void printEmployees() {
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
             System.out.println(employee.getName() + " " + employee.getLastname());
         }
     }
+
     public int getCurrenSize() {
         return size;
     }

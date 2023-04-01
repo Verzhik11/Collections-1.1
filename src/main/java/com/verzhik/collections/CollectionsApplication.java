@@ -9,11 +9,7 @@ public class CollectionsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CollectionsApplication.class, args);
-        EmployeeServices employeeServices = new EmployeeServices();
-        employeeServices.addEmployee("Максим", "Ласточкин");
-        employeeServices.addEmployee("Олег", "Иванов");
 
-        employeeServices.printEmployees();
     }
 
 }
